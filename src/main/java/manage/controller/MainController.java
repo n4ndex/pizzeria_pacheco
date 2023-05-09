@@ -1,19 +1,22 @@
 package manage.controller;
 
+import lombok.Getter;
+import lombok.Setter;
 import manage.model.MainConnection;
 import manage.model.MainConnectionModel;
 import manage.model.MainModel;
-import manage.model.dbentities.Order;
 import manage.view.LoginView;
+import manage.view.PizzaSelection;
 
-import java.util.ArrayList;
-
+@Getter
+@Setter
 public class MainController {
     private MainModel model;
     private LoginView login;
+    private PizzaSelection pizzaSelection;
     private MainConnectionModel connectionModel;
     private MainConnection connection;
-    private ArrayList<Order> orders;
+    private int currentOrderIndex;
 
     public MainController() {
         createAttributes();
@@ -25,10 +28,15 @@ public class MainController {
         login = new LoginView(model);
         connectionModel = new MainConnectionModel();
         connection = new MainConnection(connectionModel.getURL() + connectionModel.getDATABASE(), connectionModel.getUSERNAME(), connectionModel.getPASSWORD(), connectionModel.getDRIVER());
-        orders = new ArrayList<>();
+        pizzaSelection = new PizzaSelection(model, connection.getDefaultPizzas());
+        currentOrderIndex = connection.getLatestOrderCode();
     }
 
     private void addListeners() {
-
+        for (int i = 0; i < login.getButtons().size(); i++) {
+            login.getButtons().get(i).addActionListener(new LoginListener(this));
+        }
+        pizzaSelection.getPizzasTable().getSelectionModel().addListSelectionListener(new PizzaSelectionListener(this));
+        pizzaSelection.getFinishButton().addActionListener(new LoginListener(this));
     }
 }

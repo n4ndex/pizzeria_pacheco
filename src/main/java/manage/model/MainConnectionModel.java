@@ -1,6 +1,7 @@
 package manage.model;
 
-import java.sql.*;
+import java.sql.Driver;
+import java.sql.SQLException;
 
 public class MainConnectionModel {
     private final Driver DRIVER;
@@ -8,7 +9,6 @@ public class MainConnectionModel {
     private String DATABASE;
     private final String USERNAME;
     private final String PASSWORD;
-    //private ArrayList<String> SQL_STATEMENTS;
 
 
     public MainConnectionModel() {
